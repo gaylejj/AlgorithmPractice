@@ -90,5 +90,95 @@ quickUnion.union(7, q: 6)
 quickUnion.union(7, q: 1)
 quickUnion.union(3, q: 8)
 
+//Weighted Quick Union
+class WeightedQuickUnionUF {
+    var id : [Int]
+    var size = [Int]()
+    
+    init(id: [Int]) {
+        self.id = id
+    }
+    
+    func weightedQuickUnionUF(N: Int) {
+        for i in 0..<N {
+            self.id.append(i)
+        }
+    }
+    
+    func root(i: Int) -> Int {
+        var newI = i
+        while(newI != self.id[i]) {
+            newI = self.id[i]
+        }
+        return newI
+    }
+    
+    func connected(p: Int, q: Int) -> Bool {
+        return self.root(p) == self.root(q)
+    }
+
+    func union(p: Int, q: Int) {
+        var i = self.root(p)
+        var j = self.root(q)
+        
+        if i == j {
+            return
+        } else if self.size[i] < self.size[j] {
+            self.id[i] = j
+            self.size[j] += self.size[i]
+        } else {
+            self.id[j] = i
+            self.size[i] += self.size[j]
+        }
+    }
+}
+
+
+//Path Compression
+class PathCompressionQuickUnionUF {
+    var id : [Int]
+    var size = [Int]()
+    
+    init(id: [Int]) {
+        self.id = id
+    }
+    
+    func pathCompressionQuickUnionUF(N: Int) {
+        for i in 0..<N {
+            self.id.append(i)
+        }
+    }
+    
+    //One-pass implementation
+    func root(i: Int) -> Int {
+        var newI = i
+        while(newI != self.id[i]) {
+            self.id[newI] = self.id[self.id[newI]]
+            newI = self.id[i]
+        }
+        return newI
+    }
+    
+    func connected(p: Int, q: Int) -> Bool {
+        return self.root(p) == self.root(q)
+    }
+    
+    func union(p: Int, q: Int) {
+        var i = self.root(p)
+        var j = self.root(q)
+        
+        if i == j {
+            return
+        } else if self.size[i] < self.size[j] {
+            self.id[i] = j
+            self.size[j] += self.size[i]
+        } else {
+            self.id[j] = i
+            self.size[i] += self.size[j]
+        }
+    }
+}
+
+
 
 
